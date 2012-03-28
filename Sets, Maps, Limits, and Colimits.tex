@@ -1,0 +1,365 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[all]{xy}
+
+\addtolength{\voffset}{-1cm}
+\addtolength{\textheight}{0.5cm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+
+\newcounter{problemcounter}
+\newcounter{problempartcounter}
+\renewcommand{\theproblempartcounter}{(\theproblemcounter.\alph{problempartcounter})}
+\newcounter{notecounter}
+\newcommand{\problem}{\addtocounter{problemcounter}{1}\setcounter{problempartcounter}{0}\subsubsection*{Problem \theproblemcounter}}
+\newcommand{\problempart}{\addtocounter{problempartcounter}{1}\noindent\textbf{Part \theproblempartcounter}}
+
+\newcommand{\calD}{\mathcal{D}}
+
+
+\begin{document}
+
+\title{Sets, Maps, Limits and Colimits: Questions}
+\author{Daniel Zaharopol}
+\date{July 6, 2008}
+\maketitle
+
+This problem set is, well, insane.
+
+It's not meant for you to solve every problem, especially now.  For some of them, you probably don't even have enough information.  It's meant for you to think deeply about these abstract problems, to play with them throughout camp.  Some of them require group theory or topology, which you might not know until later.  But if you play with them, talk about them with others, talk about them with me (at TAU or elsewhere), you'll start to really get a feeling for how this works.  Dive in, try things, see if you can figure out what things must be.  You're welcome at any point during all of camp to talk to me about the problems and discuss your progress or ask for hints and suggestions.  The rewards for understanding these can be very large for the rest of your mathematics.
+
+Many questions here are intentionally vague.  I hope that this encourages you to think about them and take them in new directions.  When you think you have an ``answer,'' come talk to me about it and we'll see where you're at.
+
+
+\section*{Interesting Problems}
+
+\subsection*{The Definitions}
+
+We'll let $\calD$ denote a \textit{diagram} --- a collection of sets with maps between them.  For example, you might have
+
+$$
+\calD = \begin{array}{c} {\xymatrix{ X\ar[r]^f\ar[d]_g & Y \\ Z & }} \end{array}
+$$
+
+\begin{definition}
+The \textbf{limit} of a diagram $\calD$ is an object $Z$ with a map $F: Z \rightarrow \calD$ so that, for any other object $T$, maps $T \rightarrow Z$ are in bijective correspondence with maps $T \rightarrow \calD$, and the bijection is given by composing with $F$.
+\end{definition}
+
+\begin{definition}
+The \textbf{colimit} of a diagram $\calD$ is an object $Z$ with a map $F: \calD \rightarrow Z$ so that, for any other object $T$, maps $\calD \rightarrow T$ are in bijective correspondence with maps $Z \rightarrow T$, and the bijection is given by composing with $F$.
+\end{definition}
+
+\subsection*{Some Introductory Questions}
+
+\problem
+
+\problempart
+
+Find the limit of the following diagram (which has no arrows): $$\{-4, 12, 183\}\; \; \; \; \{0, 12, 36\}$$
+
+\problempart
+
+Find the colimit of the following diagram:
+
+$$
+\xymatrix{
+\{0, 3\}\ar@<1ex>[r]^-{\times 3}\ar@{^(->}@<-1ex>[r]_-{\textrm{incl.}} & \{0, 3, 6, 9 \}
+}
+$$
+
+
+\problem
+
+What are the limit and colimit of the following diagram?
+
+$$\xymatrix{
+\{ 0, 5, 8 \}\ar[r]^-{\times 3} & \mathbb{Z}
+}
+$$
+
+
+\problem
+
+Find the colimit of the following diagram:
+
+$$
+\xymatrix{
+\{0, 1, 2\} \ar@{^(->}[r]^-{\textrm{incl.}}\ar[dr]_{\times 3} & \{ 0, 1, 2, 3, 4 \} \ar[dr]^{\textrm{mod}\; 2} & \\
+& \{0, 3, 6, 9, 12\} \ar[r]_-{\textrm{mod}\; 2} & \{ 0, 1 \} \\
+\{2, 3, 4\}\ar[ur]^{\times 3}\ar@{^(->}[r]_-{\textrm{incl.}} & \{ 1, 2, 3, 4 \}\ar[ur]_{\textrm{mod}\; 2} & 
+}
+$$
+
+\noindent (Hint: this problem is not nearly as hard as it looks!)
+
+\problem
+
+Find the limit of the following diagram:
+
+$$
+\xymatrix{
+& \{ -5, -2, 0, 1 \}\ar[d]^-{+ 2} \\
+\{ -1, 0, 1 \}\ar[r]^-{\times 2} & \{ -3, -2, -1, 0, 1, 2, 3 \}
+}
+$$
+
+\problem
+
+\problempart
+
+The colimit of the diagram
+
+$$
+\xymatrix{
+X\ar[r]^f\ar[d]_g & Y \\
+Z &
+}
+$$
+
+\noindent is called a \textit{pushout}.
+
+Explain how to construct this in general in terms of $X$, $Y$, and $Z$ (and $f$ and $g$) using the coproduct and taking equivalence classes.
+
+The limit of the diagram
+
+$$
+\xymatrix{
+& X\ar[d]^f \\
+Y\ar[r]^g & Z
+}
+$$
+
+\noindent is called a \textit{pullback}.
+
+Explain how to construct this in general in terms of $X$, $Y$, and $Z$ (and $f$ and $g$) using products and by taking subsets.
+
+\problem
+
+\problempart
+
+Explain how to construct the colimit of any diagram of sets using coproducts and by taking equivalence classes.
+
+\problempart
+
+Explain how to construct the limit of any diagram of sets using products and by taking subsets.
+
+
+\problem
+
+What is
+
+$$\textrm{colim} \left( \begin{array}{l}
+\xymatrix{ \{0\}\ar@{^(->}[r]^-{\textrm{incl.}} & \{-1, 0, 1 \}\ar@{^(->}[r]^-{\textrm{incl.}} & \{-2, -1, 0, 1, 2 \}\ar@{^(->}[r]^-{\textrm{incl.}} & \{-3, -2, -1, 0, 1, 2, 3 \}\ar@{^(->}[r]^-{\textrm{incl.}} & \cdots} \end{array} \right)\textrm{?}$$
+
+
+\problem
+
+Now, instead of sets of integers, consider sets of strings --- where a string is a finite list of symbols.  (It doesn't matter, because you can identify numbers with strings, but for now let's think of strings that consist of the letters {\tt a} and {\tt b}.)  Find a nice way to think about
+
+$$\textrm{lim} \left( \begin{array}{l}
+\xymatrix{ \cdots\ar[r] & \{\textrm{strings of length}\; n \}\ar[r]^-{\textrm{first}\; n-1}_-{\textrm{letters}} & \{\textrm{strings of length}\; n-1 \}\ar[r] & \cdots\ar`r[d]`[l]`[dlll]`[dl][dll] & \\ & \{\textrm{strings of length}\; 2 \}\ar[r]^{\textrm{first}}_{\textrm{letter}} & \{\textrm{strings of length}\; 1 \} & }\end{array} \right)$$
+
+\noindent that is,
+
+$$\textrm{lim} \left( \begin{array}{l}
+\xymatrix{ \cdots\ar[r] & \{\mathtt{aaa}, \mathtt{aab}, \mathtt{aba}, \mathtt{abb}, \mathtt{baa}, \mathtt{bab}, \mathtt{bba}, \mathtt{bbb} \}\ar[r]^-{\textrm{first}\; 2}_-{\textrm{letters}} & \{\mathtt{aa}, \mathtt{ab}, \mathtt{ba}, \mathtt{bb} \}\ar[r]^-{\textrm{first}}_-{\textrm{letter}} & \{\mathtt{a}, \mathtt{b} \}}\end{array} \right)\textrm{?}$$
+
+
+\problem
+
+In class, we may have proved (depending on how much time I had when I got to the theorem) that products are unique up to isomorphism.  If not, prove it now.  If yes, prove in a similar method that coproducts are unique up to isomorphism.
+
+For bonus points, explain how the proof generalizes to show that if any limit (or colimit) of a diagram exists, then all limits (or colimits) of a diagram are isomorphic.
+
+
+\section*{Other Categories}
+
+The magic of limits and colimits is that they are not just defined for sets.  They can be defined for many different kinds of objects.  After an introduction to thinking about other categories, we'll examine some of the places that limits and colimits show up in when you're talking about Abelian groups and when you're talking about topological spaces.
+
+To get this across, let's look at two situations where there aren't even any sets underlying our ``categories.''  (A \textbf{category} is a collection of \textit{objects} together with \textit{maps} between those objects, so that you can compose any two maps associatively (and there are some other details in the definition).  For example, if you have three sets $A$, $B$, and $C$, with maps $f: A \rightarrow B$ and $g: B \rightarrow C$, you can \textit{compose} $f$ and $g$ to get a new map $A \rightarrow C$.  This new map is written $g \circ f$, so that $(g \circ f)(a) = g(f(a))$.  Notice that the definition of a category doesn't require that the objects---$A$, $B$, and $C$---are sets.  In an arbitrary category, this composition is defined abstractly: $A$, $B$, and $C$ may nto be sets---they won't even have elements---so I can't write $f(a)$, but I should still be able to take two maps $f: A \rightarrow B$ and $g: B \rightarrow C$ and get a new map $g \circ f: A \rightarrow C$.  Because our definition of limits and colimits only relies on the objects and maps between them, we can construct them in any category if they exist.)
+
+\problem
+
+Here is an abstract category.
+
+The \textit{objects} consist of all integers.  (So the objects are just the set $\mathbb{Z}$.)  There is a map $m \rightarrow n$ whenever $m$ divides $n$.  You can compose maps because if $k$ divides $m$ you have a unique map $k \rightarrow m$, and if $m$ divides $n$ you have a unique map $m \rightarrow n$; then $k$ divides $n$, and so the composition of the maps is the unique map $k \rightarrow n$.
+
+Describe products and coproducts in terms of constructions with the integers that you are already familiar with.
+
+\problem
+
+Here is another abstract category.
+
+The \textit{objects} consist of all real numbers.  (So the objects are just the set $\mathbb{R}$.)  There is a unique map $x \rightarrow y$ whenever $x \leq y$.  As before, you can compose maps: if you have $x \rightarrow y$ and $y \rightarrow z$, then $x \leq y \leq z$, so the composition is the unique map $x \rightarrow z$.
+
+\problempart
+
+Find the product and coproduct of the elements consisting of all points $\frac{1}{n}$ for $n$ a positive integer.
+
+\problempart
+
+Can you come up with a general description of what limits and colimits are in this category?
+
+
+
+\subsection*{Group Theory\footnote{You should do these problems only after you've seen some group theory.}}
+
+Consider just the category \textbf{Ab} of Abelian groups (aka commutative groups).  The objects are all Abelian groups, and the maps are all group homomorphisms.
+
+\problem
+
+\problempart
+
+We can express the notion of ``kernel'' in terms of limits.  Given a map $f: H \rightarrow G$, construct a diagram whose limit is the kernel of the map $f$.
+
+\problempart
+
+Given a map $f: H \rightarrow G$, give a diagram whose colimit is the cokernel of the map $f$.  (The \textit{cokernel} of a map is $G / \textrm{Im}\, f$.)
+
+Explain how this allows you to express quotient groups in terms of colimits.
+
+\problem
+
+\problempart
+
+Show that the \textit{direct sum} of two groups, denoted $G \oplus H$, is the coproduct of the groups.
+
+\problempart
+
+Show that the \textit{direct product} of two groups, denoted $G \times H$, is the product of the groups.
+
+\problempart
+
+Wait a minute!  $G \oplus H$ and $G \times H$ are isomorphic as groups!  Does that mean that product and coproduct are the same in the category of Abelian groups?
+
+Explain how \textit{infinite} products and coproducts are different in \textbf{Ab}, even though finite products and coproducts are the same.  This is why the definitions differ.
+
+
+\problem
+
+This problem is better done with an understanding of rings.
+
+\problempart
+
+The \textbf{$p$-adic integers} are defined by:
+
+$$\textrm{lim} \left( \begin{array}{l} \xymatrix{
+\cdots \ar[r] & \mathbb{Z}/p^n\mathbb{Z}\ar[r] & \mathbb{Z}/p^{n-1}\mathbb{Z}\ar[r] & \cdots\ar[r] & \mathbb{Z}/p^2\mathbb{Z}\ar[r] & \mathbb{Z}/p\mathbb{Z} } \end{array} \right)$$
+
+\noindent (The limit is taken in the category of commutative rings.)
+
+The map from $\mathbb{Z}/p^n\mathbb{Z} \rightarrow \mathbb{Z}/p^{n-1}\mathbb{Z}$ is given by taking a number $k$ mod $p^n$ and then just taking that number mod $p^{n - 1}$.  You can check that these maps are ring homomorphisms.
+
+Find a nice way to think about this ring.  Can you find the integers as a subring?
+
+\problempart
+
+Describe explicitly the addition and multiplication structure and check that it works.  In particular, what are inverses and how do you know that they exist?
+
+
+\problem
+
+Understand as best as you can (using groups or rings): $$\textrm{colim}\left( \begin{array}{l} \xymatrix{ \mathbb{Z}/p\mathbb{Z} \ar@{^(->}[r] & \mathbb{Z}/p^2\mathbb{Z}\ar@{^(->}[r] & \cdots } \end{array} \right)$$ where each arrow is the inclusion coming from multiplication by $p$ (is there a nice name for this object?), and $$\textrm{lim}\left( \begin{array}{l} \xymatrix{ \cdots\ar[r] & \mathbb{Z} \ar[r]^p & \mathbb{Z}\ar[r]^p & \mathbb{Z} } \end{array} \right).$$
+
+
+\subsection*{Topology\footnote{You should do these problems only after you've seen some point-set topology, at least up through the ideas of products and of quotient spaces.}}
+
+Some definitions, first.
+
+\begin{definition}
+The \textbf{$n$-dimensional sphere} is the space defined as a subset of $\mathbb{R}^{n + 1}$ by
+
+$$S^n = \{(x_1, \ldots, x_{n + 1}) | x_1^2 + x_2^2 + \cdots + x_{n+1}^2 = 1 \}.$$
+\end{definition}
+
+\begin{definition}
+The \textbf{$n$-dimensional disc} is the space defined as a subset of $\mathbb{R}^n$ by
+
+$$D^n = \{ (x_1, \ldots, x_n) | x_1^2 + x_2^2 + \cdots + x_n^2 \leq 1 \}.$$
+\end{definition}
+
+\problem
+
+\problempart
+
+Explain why the following gives $S^n$:
+
+$$ \textrm{colim} \left( \begin{array}{l} \xymatrix{
+S^{n - 1}\ar@{^(->}[r]^{\textrm{incl.}}\ar@{^(->}[d]^{\textrm{incl.}} & D^n \\
+D^n & 
+} \end{array} \right) $$
+
+\problempart
+
+What are coproducts in the category of topological spaces?  (Called \textbf{Top}.)
+
+\problempart
+
+What are pushouts for topological spaces?  Make sure to identify the open sets.
+
+\subsubsection*{Example}
+
+In topology, a \textit{CW-complex} is built up by gluing discs together.  (That is, by gluing spaces homeomorphic to the one-disc $x_1^2 \leq 1$, the two-disc $x_1^2 + x_2^2 \leq 1$, ..., the $n$-disc $x_1^2 + \ldots + x_n^2 \leq 1$, etc., along their boundaries.)  As the above example with the $n$-sphere indicates, we can describe this gluing using pushouts.
+
+However, we might want to get a CW-complex which has discs glued of every dimension.  There is, in fact, a way to do this.
+
+To define an infinite CW-complex $X$, we first define the finite CW-complexes $X^0$, $X^1$, $X^2$, etc.  $X^0$ consists just of a disjoint union of points, aka $0$-discs or $D^0$s.  $X^1$ is what we get after we attach $1$-cells, aka $1$-discs or $D^1$'s.  Each of these represents a finite stage of the infinite construction we want to make.
+
+Now, each $X^i$ is a subspace of $X^{i + 1}$, because each is just built from attaching higher-dimensional discs.  What we want to do is somehow take an infinite union of all of these, but remembering that each one is built from the previous (so we don't want a big \textit{disjoint} union; we want to remember that some subcomplexes are the same).  We can use colimits to define this CW-complex built of cells of every dimension as follows:
+
+$$X = \textrm{colim} \left( \begin{array}{l} \xymatrix{ X^0\ar@{^(->}[r] & X^1\ar@{^(->}[r] & X^2\ar@{^(->}[r] & X^3\ar@{^(->}[r] & \cdots } \end{array} \right)$$
+
+
+\problem
+
+Show that the ``product'' of two topological spaces is indeed their product in the categorical sense (i.e. that $X \times Y$ as a topological space is the limit of the diagram with no arrows and two objects, $X$ and $Y$).  Pay attention to making sure that the topology on $X \times Y$ is the right one.
+
+Now suppose we have a collection of spaces $X_0, X_1, X_2, \ldots$.  Show that the product of these spaces is indeed the same as the limit of a diagram which has each of these as objects and no maps between them.  Pay careful attention to the topology: why is it the product topology and not the box topology on $$\prod_{i = 1, 2, \ldots} X_i?$$  Prove that the product you know from topology is indeed the product in the categorical sense.
+
+(Note that the above would have worked perfectly well if you'd taken spaces $X_i$ for $i \in I$ some infinite index set; it doesn't have to be a countable product.  It's only phrased that way to make your life easier.)
+
+
+\problem
+
+The \textbf{discrete} topology on a space is the topology where every subset is open.  Suppose we take an infinite product of copies of $\{ 0, 1 \}$ with the discrete topology.  Explain why the resulting space does \textit{not} have the discrete topology.
+
+
+\problem
+
+Consider the limit defined before in the category of sets:
+
+$$\textrm{lim} \left( \begin{array}{l}
+\xymatrix{ \cdots\ar[r] & \{\mathtt{aaa}, \mathtt{aab}, \mathtt{aba}, \mathtt{abb}, \mathtt{baa}, \mathtt{bab}, \mathtt{bba}, \mathtt{bbb} \}\ar[r]^-{\textrm{first}\; 2}_-{\textrm{letters}} & \{\mathtt{aa}, \mathtt{ab}, \mathtt{ba}, \mathtt{bb} \}\ar[r]^-{\textrm{first}}_-{\textrm{letter}} & \{\mathtt{a}, \mathtt{b} \}}\end{array} \right)$$
+
+Suppose that now we give these sets of strings the discrete topology, and take the limit in topological spaces.  This will turn out to have the same underlying set, but an interesting topology on that set.
+
+\problempart
+
+Prove that the resulting topology is not discrete, but that each point is its own connected component.  (The name for this situation --- when each point forms a connected component --- is \textbf{totally disconnected}.)
+
+\problempart
+
+Give a homeomorphism between this space and the Cantor set.
+
+\noindent(\textit{Hint:} think of the ternary expansion of the Cantor set.)
+
+\problempart
+
+Provide an isomorphism between the construction above and the construction of the $2$-adics:
+
+$$
+\xymatrix{
+\cdots\ar[r] & \{\mathtt{aaa}, \mathtt{aab}, \mathtt{aba}, \mathtt{abb}, \mathtt{baa}, \mathtt{bab}, \mathtt{bba}, \mathtt{bbb} \}\ar[r]^-{\textrm{first}\; 2}_-{\textrm{letters}}\ar@{<->}[d]^{\cong} & \{\mathtt{aa}, \mathtt{ab}, \mathtt{ba}, \mathtt{bb} \}\ar[r]^-{\textrm{first}}_-{\textrm{letter}}\ar@{<->}[d]^{\cong} & \{\mathtt{a}, \mathtt{b} \}\ar@{<->}[d]^{\cong} \\
+\cdots\ar[r]^-{\mod 2^3} & \mathbb{Z}/2^3\mathbb{Z}\ar[r]^-{\mod 2^2} & \mathbb{Z}/2^2\mathbb{Z}\ar[r]^-{\mod 2} & \mathbb{Z}/2\mathbb{Z}
+} $$
+
+This shows that, topologically, the $2$-adic integers are in fact homeomorphic to the Cantor set.
+
+
+\end{document}
