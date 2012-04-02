@@ -1,0 +1,276 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      9744,        267]
+NotebookOptionsPosition[      9189,        245]
+NotebookOutlinePosition[      9533,        260]
+CellTagsIndexPosition[      9490,        257]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"space", "=", "0.025"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vp", "=", 
+   RowBox[{"{", 
+    RowBox[{"3.2", ",", "0.2", ",", "0.8"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vv", "=", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Dynamic", "[", "vp", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Dynamic", "[", "vv", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"max", "=", "4.5"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"factor", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Dynamic", "[", 
+  RowBox[{"Show", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ParametricPlot3D", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Cos", "[", 
+         RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+        RowBox[{"t", "/", "factor"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", "0", ",", "max"}], "}"}], ",", 
+      RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+      RowBox[{"Boxed", "\[Rule]", "False"}], ",", 
+      RowBox[{"PlotStyle", "\[Rule]", "Black"}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Full", ",", "Full", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "4"}], 
+            RowBox[{"space", "/", "factor"}]}], ",", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"max", "+", 
+              RowBox[{"4", "space"}]}], ")"}], "/", "factor"}]}], "}"}]}], 
+        "}"}]}]}], "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Graphics3D", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"PointSize", "[", "Medium", "]"}], ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Cos", "[", 
+             RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+            RowBox[{"Sin", "[", 
+             RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+            RowBox[{"t", "/", "factor"}]}], "}"}], "]"}]}], "}"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", 
+        RowBox[{"max", "+", "space"}], ",", 
+        RowBox[{"max", "+", 
+         RowBox[{"3", "space"}]}], ",", "space"}], "}"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Graphics3D", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"PointSize", "[", "Medium", "]"}], ",", 
+         RowBox[{"Point", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Cos", "[", 
+             RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+            RowBox[{"Sin", "[", 
+             RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+            RowBox[{"t", "/", "factor"}]}], "}"}], "]"}]}], "}"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", 
+        RowBox[{"-", "space"}], ",", 
+        RowBox[{
+         RowBox[{"-", "3"}], "space"}], ",", 
+        RowBox[{"-", "space"}]}], "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"ViewPoint", "\[Rule]", 
+     RowBox[{"Dynamic", "[", "vp", "]"}]}], ",", 
+    RowBox[{"ViewVertical", "\[Rule]", 
+     RowBox[{"Dynamic", "[", "vv", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<covering_space.pdf\>\""}], "}"}], "]"}], ",", "%"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Dynamic", "[", 
+  RowBox[{"Show", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ParametricPlot3D", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Cos", "[", 
+         RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"2", "\[Pi]", " ", "t"}], "]"}], ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", "0", ",", 
+        RowBox[{"2", "\[Pi]"}]}], "}"}], ",", 
+      RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+      RowBox[{"Boxed", "\[Rule]", "False"}], ",", 
+      RowBox[{"PlotStyle", "\[Rule]", "Black"}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Full", ",", "Full", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.1"}], ",", "0.1"}], "}"}]}], "}"}]}]}], "]"}], ",",
+     "\[IndentingNewLine]", 
+    RowBox[{"ViewPoint", "\[Rule]", 
+     RowBox[{"Dynamic", "[", "vp", "]"}]}], ",", 
+    RowBox[{"ViewVertical", "\[Rule]", 
+     RowBox[{"Dynamic", "[", "vv", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<circle.pdf\>\""}], 
+     "}"}], "]"}], ",", "%"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.5423488134267387`*^9, 3.542348847486492*^9}, {
+  3.542348888390599*^9, 3.5423490692289114`*^9}, {3.5423491069038515`*^9, 
+  3.5423492453169794`*^9}, {3.54234927793666*^9, 3.5423494152447305`*^9}, {
+  3.542349452000623*^9, 3.5423494870114264`*^9}, {3.542349542335275*^9, 
+  3.54234954397836*^9}, {3.542349581028268*^9, 3.5423497839197164`*^9}, {
+  3.5423502259874816`*^9, 3.5423502350869503`*^9}}],
+
+Cell[BoxData[
+ DynamicBox[ToBoxes[$CellContext`vp, StandardForm],
+  ImageSizeCache->{99., {2., 8.}}]], "Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.542350242682341*^9}}],
+
+Cell[BoxData[
+ DynamicBox[ToBoxes[$CellContext`vv, StandardForm],
+  ImageSizeCache->{57., {2., 8.}}]], "Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.5423502426873417`*^9}}],
+
+Cell[BoxData["4.5`"], "Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.5423502427133427`*^9}}],
+
+Cell[BoxData[
+ DynamicBox[ToBoxes[
+   Show[
+    ParametricPlot3D[{
+      Cos[2 Pi $CellContext`t], 
+      Sin[
+      2 Pi $CellContext`t], $CellContext`t/$CellContext`factor}, \
+{$CellContext`t, 0, $CellContext`max}, Axes -> False, Boxed -> False, 
+     PlotStyle -> Black, 
+     PlotRange -> {
+      Full, Full, {(-4) ($CellContext`space/$CellContext`factor), \
+($CellContext`max + 4 $CellContext`space)/$CellContext`factor}}], 
+    Table[
+     Graphics3D[{
+       PointSize[Medium], 
+       Point[{
+         Cos[2 Pi $CellContext`t], 
+         Sin[
+         2 Pi $CellContext`t], $CellContext`t/$CellContext`factor}]}], \
+{$CellContext`t, $CellContext`max + $CellContext`space, $CellContext`max + 
+      3 $CellContext`space, $CellContext`space}], 
+    Table[
+     Graphics3D[{
+       PointSize[Medium], 
+       Point[{
+         Cos[2 Pi $CellContext`t], 
+         Sin[
+         2 Pi $CellContext`t], $CellContext`t/$CellContext`factor}]}], \
+{$CellContext`t, -$CellContext`space, (-3) $CellContext`space, \
+-$CellContext`space}], ViewPoint -> Dynamic[$CellContext`vp], ViewVertical -> 
+    Dynamic[$CellContext`vv]], StandardForm],
+  ImageSizeCache->{360., {203., 208.}}]], "Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.542350242715343*^9}}],
+
+Cell[BoxData["\<\"D:\\\\Documents\\\\Dropbox\\\\MIT\\\\2011-2012\\\\18.904 - \
+Seminar in Topology\\\\Quillen Model Structures\\\\covering_space.pdf\"\>"], \
+"Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.5423502430193586`*^9}}],
+
+Cell[BoxData[
+ DynamicBox[ToBoxes[
+   Show[
+    ParametricPlot3D[{
+      Cos[2 Pi $CellContext`t], 
+      Sin[2 Pi $CellContext`t], 0}, {$CellContext`t, 0, 2 Pi}, Axes -> False, 
+     Boxed -> False, PlotStyle -> Black, 
+     PlotRange -> {Full, Full, {-0.1, 0.1}}], ViewPoint -> 
+    Dynamic[$CellContext`vp], ViewVertical -> Dynamic[$CellContext`vv]], 
+   StandardForm],
+  ImageSizeCache->{360., {53., 57.}}]], "Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.542350243022359*^9}}],
+
+Cell[BoxData["\<\"D:\\\\Documents\\\\Dropbox\\\\MIT\\\\2011-2012\\\\18.904 - \
+Seminar in Topology\\\\Quillen Model Structures\\\\circle.pdf\"\>"], "Output",
+ CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
+  3.542350235396966*^9, 3.542350243315374*^9}}]
+}, Open  ]]
+},
+WindowSize->{707, 537},
+WindowMargins->{{134, Automatic}, {Automatic, 59}},
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 5575, 144, 572, "Input"],
+Cell[6157, 168, 227, 4, 30, "Output"],
+Cell[6387, 174, 229, 4, 30, "Output"],
+Cell[6619, 180, 148, 2, 30, "Output"],
+Cell[6770, 184, 1301, 33, 426, "Output"],
+Cell[8074, 219, 284, 4, 50, "Output"],
+Cell[8361, 225, 537, 12, 125, "Output"],
+Cell[8901, 239, 272, 3, 50, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
