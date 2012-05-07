@@ -7,3 +7,6 @@
 *.blg
 *~
 *.bak
+*.synctex.gz
+*.dvi
+Quillen_Model_Structures_Paper*.pdf
