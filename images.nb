@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      9744,        267]
-NotebookOptionsPosition[      9189,        245]
-NotebookOutlinePosition[      9533,        260]
-CellTagsIndexPosition[      9490,        257]
+NotebookDataLength[      9913,        267]
+NotebookOptionsPosition[      9358,        245]
+NotebookOutlinePosition[      9702,        260]
+CellTagsIndexPosition[      9659,        257]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -170,17 +170,17 @@ Cell[BoxData[
  DynamicBox[ToBoxes[$CellContext`vp, StandardForm],
   ImageSizeCache->{99., {2., 8.}}]], "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.542350242682341*^9}}],
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480628128757`*^9}],
 
 Cell[BoxData[
  DynamicBox[ToBoxes[$CellContext`vv, StandardForm],
   ImageSizeCache->{57., {2., 8.}}]], "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.5423502426873417`*^9}}],
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480628238764`*^9}],
 
 Cell[BoxData["4.5`"], "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.5423502427133427`*^9}}],
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480628448772`*^9}],
 
 Cell[BoxData[
  DynamicBox[ToBoxes[
@@ -215,13 +215,13 @@ Cell[BoxData[
     Dynamic[$CellContext`vv]], StandardForm],
   ImageSizeCache->{360., {203., 208.}}]], "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.542350242715343*^9}}],
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480628468776`*^9}],
 
 Cell[BoxData["\<\"D:\\\\Documents\\\\Dropbox\\\\MIT\\\\2011-2012\\\\18.904 - \
 Seminar in Topology\\\\Quillen Model Structures\\\\covering_space.pdf\"\>"], \
 "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.5423502430193586`*^9}}],
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480636879225`*^9}],
 
 Cell[BoxData[
  DynamicBox[ToBoxes[
@@ -235,12 +235,12 @@ Cell[BoxData[
    StandardForm],
   ImageSizeCache->{360., {53., 57.}}]], "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.542350243022359*^9}}],
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480637139235`*^9}],
 
 Cell[BoxData["\<\"D:\\\\Documents\\\\Dropbox\\\\MIT\\\\2011-2012\\\\18.904 - \
 Seminar in Topology\\\\Quillen Model Structures\\\\circle.pdf\"\>"], "Output",
  CellChangeTimes->{{3.542349752266086*^9, 3.542349793916231*^9}, {
-  3.542350235396966*^9, 3.542350243315374*^9}}]
+   3.542350235396966*^9, 3.542350242682341*^9}, 3.5453480640649424`*^9}]
 }, Open  ]]
 },
 WindowSize->{707, 537},
@@ -261,13 +261,13 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[579, 22, 5575, 144, 572, "Input"],
-Cell[6157, 168, 227, 4, 30, "Output"],
-Cell[6387, 174, 229, 4, 30, "Output"],
-Cell[6619, 180, 148, 2, 30, "Output"],
-Cell[6770, 184, 1301, 33, 426, "Output"],
-Cell[8074, 219, 284, 4, 50, "Output"],
-Cell[8361, 225, 537, 12, 125, "Output"],
-Cell[8901, 239, 272, 3, 50, "Output"]
+Cell[6157, 168, 252, 4, 30, "Output"],
+Cell[6412, 174, 252, 4, 30, "Output"],
+Cell[6667, 180, 171, 2, 30, "Output"],
+Cell[6841, 184, 1326, 33, 426, "Output"],
+Cell[8170, 219, 307, 4, 50, "Output"],
+Cell[8480, 225, 562, 12, 125, "Output"],
+Cell[9045, 239, 297, 3, 50, "Output"]
 }, Open  ]]
 }
 ]
