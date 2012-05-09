@@ -27,7 +27,8 @@
   \expandafter\providecommand\expandafter*\expandafter{\csname #1autorefname\endcsname}{#3}
 }
 
-\newtheorem{thm}{Theorem}[section]
+\newaliasedtheorem{thm}[subsection]{Theorem}
+%\newtheorem{thm}{Theorem}[section]
 %\newtheorem{theorem}{Theorem}
 \newaliasedtheorem{conjecture}[thm]{Conjecture}
 \newaliasedtheorem{lem}[thm]{Lemma}
@@ -85,6 +86,8 @@
   }%
 }
 
+\usepackage{wrapfig}
+
 \usepackage[all]{xy}
 
 \newcommand{\xyincludegraphics}[2][]{\raisebox{-0.5\height}{\includegraphics[#1]{#2}}}
@@ -97,6 +100,7 @@
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\colim}{colim}
+\DeclareMathOperator{\Ho}{Ho}
 
 \begin{document}
 \title{A gentle introduction to a model category of topological spaces}
@@ -111,7 +115,7 @@
 %\keywords{Quillen,model category,topology,model structure}
 
 \begin{abstract}
-  The intent of this paper is to provide a gentle introduction to a model category of topological spaces.  The presentation is intended to be accessible to anyone familiar with introductory topology, homotopy, and CW-complexes.  In particular, no knowledge of category theory is assumed.  This paper introduces and explains all of the necessary category theory to understand model categories; defines the notion of a model category; presents a model category structure for the category of topological spaces using homotopy equivalences, closed Hurewicz fibrations, and Hurewicz cofibrations; and elaborates on the axioms in the context of this particular model category.
+  The intent of this paper is to provide a somewhat gentle introduction to a model category of topological spaces.  The presentation is intended to be accessible to anyone familiar with introductory topology, homotopy, and CW-complexes.  In particular, no knowledge of category theory is assumed.  This paper introduces and explains all of the necessary category theory to understand model categories; defines the notion of a model category; presents a model category structure for the category of topological spaces using homotopy equivalences, closed Hurewicz fibrations, and Hurewicz cofibrations; defines left and right homotopy equivalence; and defines the homotopy category of a model category.
 \end{abstract}
 
 \maketitle
@@ -125,36 +129,21 @@
 
 \section{Category Theory}
   \begin{defn}[Category]
-    A \defnlabel{category} $\cat C$ is a collection of \emph{objects}, denoted $\Ob(\cat C)$, together with a collection of \emph{morphisms} between objects (also called \emph{maps} or \emph{arrows}), subject to the following axioms:
+    A \defnlabel{category} $\cat C$ is a collection of \emph{objects}, denoted $\Ob(\cat C)$, together with a collection of \emph{morphisms} between objects (also called \emph{maps} or \emph{arrows}), denoted $\Hom(\cat C)$, subject to the following axioms:
     \begin{itemize}
-      \item Morphisms may be composed:  If $f: X \to Y$ and $g : Y \to Z$ are morphisms in \cat C, then there is a morphism $g \circ f : X \to Z$.  We drop the $\circ$ when there is no ambiguity, and write $gf$ instead of $g \circ f$.
+      \item Morphisms may be composed:  If $f: X \to Y$ and $g : Y \to Z$, then there is a morphism $g \circ f : X \to Z$.  We drop the $\circ$ when there is no ambiguity.
       \item Composition of morphisms is associative:  If $f: X \to Y$, $g: Y\to Z$, and $h: Z\to W$ are morphisms in \cat C, then $h \circ (g \circ f) = (h \circ g) \circ f$.
       \item Every object has an identity morphism:  For every object $X$, there is a morphism $\id_X : X \to X$ such that for every object $Y$, for every morphism $f : X \to Y$ and every morphism $g : Y \to X$, $f \circ \id_X = f$ and $\id_X \circ g = g$.
     \end{itemize}
     
-    For any two objects $X$ and $Y$ in $\cat C$, we denote the collection of all morphisms $f: X \to Y$ in $\cat C$ by $\Hom_{\cat C}(X, Y)$.  In this paper, $\Hom_{\cat C}(X, Y)$ will always be a set (rather than something larger, like a collection or a class).
+    For any two objects $X$ and $Y$ in $\cat C$, we denote the collection of all morphisms $f: X \to Y$ in $\cat C$ by $\Hom_{\cat C}(X, Y)$.  In this paper, $\Hom_{\cat C}(X, Y)$ will always be a set. % (rather than something larger, like a collection or a class).
   \end{defn}
   
   \begin{remark*}
     The identity morphisms in any category are unique.  A morphism $f : X \to Y$ is called an \defnlabel{isomorphism} if there is a morphism $g : Y \to X$ such that $gf = \id_X$ and $fg = \id_Y$.  In this case, we say that $X$ and $Y$ are \defnlabel{isomorphic}.
   \end{remark*}
   
-  \begin{examples*}\par\noindent
-    \begin{itemize}
-      \item The empty category, $\emptyset$, consisting of no objects and no morphisms
-      \item The category, $*$, with one object and no non-identity morphisms.
-      \item A category with a set $S$ of objects and no non-identity morphisms
-      \item The category $\{a \from b \to c\}$ consisting of three objects, the two morphisms $b \to a$ and $b \to c$, and the three identity morphisms $\id_a$, $\id_b$, and $\id_c$
-%      \item The category \cat{Set}, consisting of sets (the objects) and maps between sets (the morphisms)
-      \item The category \cat{Top}, consisting of topological spaces (the objects) and continuous maps (the morphisms)
-%      \item The category \cat{Grp}, consisting of groups (the objects) and maps preserving the group operation (the morphisms)
-%      \item For any two categories $\cat C$ and $\cat D$, there is a direct product category $\cat C \times \cat D$.  The objects are pairs of objects $(X, Y)$ for $X\in \Ob (\cat C)$ and $Y\in \Ob(\cat D)$ and the morphisms are pairs of morphisms $(f, g)$ for $f$ a morphism in $\cat C$ and $g$ a morphism in $\cat D$.
-    \end{itemize}
-  \end{examples*}
-  
-  \begin{defn}[Subcategory]
-    If $\cat C$ and $\cat D$ are categories with $\Ob(\cat D) \subset \Ob(\cat C)$ and for which every morphism in $\cat D$ is also a morphism in $\cat D$, then we say that $\cat D$ is a \defnlabel{subcategory} of $\cat C$ and we write $\cat D \subset \cat C$.
-  \end{defn}
+  See \autoref{sec:category-examples} for some examples of categories.
   
   \begin{defn}[Initial and Terminal Objects]
     An \defnlabel{initial object} $\emptyset$ of a category $\cat C$ is an object with exactly one morphism \emph{to} every other object in $\cat C$.
@@ -162,23 +151,17 @@
     A \defnlabel{terminal object} $*$ of a category $\cat C$ is an object with exactly one morphism \emph{from} every other object $\cat C$.
   \end{defn}
   
-  \begin{xca} \label{xca:initial_terminal_unique}
-    Show that the initial and terminal objects of a category, if they exist, are unique up to unique \defnref{isomorphism}.
-    
-    (Solution on \autopageref{sol:initial_terminal_unique}.)
-  \end{xca}
-  
   \begin{examples*}\par\noindent
     \begin{itemize}
 %      \item The initial object in the category \cat{Set} of sets is the empty set; there is exactly one map from the empty set to any other set (the trivial one).  Furthermore, the empty set is the only set with a map to the empty set, so there are no other initial objects.
 %      \item Any singleton set (a set with one element) is a terminal object in the category \cat{Set}.  There is only one singleton set, up to unique isomorphism.
-      \item The initial object in the category \cat{Top} of topological spaces is the empty space; there is exactly one map from the empty space to any other space (the trivial one).  Furthermore, the empty space is the only set with a map to the empty space, so there are no other initial objects.  Any one-point space is a terminal object.
+      \item The initial object in the category \cat{Top} of topological spaces is the empty space; there is exactly one map from the empty space to any other space (the trivial map).  Any one-point space is a terminal object.
 %      \item In the category \cat{Grp} of groups, the (trivial) group with one element is both an initial object and a terminal object.
 %      \item In the category of pointed sets (sets with a distinguished element), a morphism from $(A, a) \to (B, b)$ (with $a\in A$ and $b\in B$) is a map $f : A \to B$ with $f(a) = b$.  In this category, singleton sets are both initial and terminal objects.
 %      \item In the category of rings, the ring of integers $\mathbb Z$ is an initial object, and the trivial ring consisting of a single element $0 = 1$ is a terminal object.
       \item In the category of \defnref[small category]{small categories}, where the objects are small categories and the morphisms are \defnref[functor]{functors} between categories, the empty category is an initial object and the category $*$, with one object and no non-identity morphisms, is a terminal object.
     \end{itemize}
-    See \cite{wiki:InitialAndTerminalObjects} for a more extensive list.
+    See \autoref{sec:initial-and-terminal} for some more examples, and \cite{wiki:InitialAndTerminalObjects} for a more extensive list.
   \end{examples*}
   
   For ease of presentation, I now define categorical diagrams.  I will come back to these later to give a more precise characterization.
@@ -189,85 +172,33 @@
     If it is the case that, for any objects $X$ and $Y$ in the diagram, there is at most one morphism $f : X \to Y$ (i.e., $f : X \to Y$ is unique, if it exists), then that diagram is said to \defnlabel[commutative diagram]{commute}.  Informally, a commutative diagram is one in which all the ways that you can follow arrows to get from $X$ to $Y$ agree on how elements of $X$ get mapped to elements of $Y$.
   \end{defn}
   
-%  \begin{examples*}\par\noindent
-%    \begin{itemize}
-%      \item Any diagram with no non-identity morphisms is commutative.
-%      \item The following diagram, where incl.~denotes inclusion, is commutative:
-%        \[
-%          \xymatrix{
-%            \{1, 2, 3\} \ar@{^(->}[rr]^{\text{incl.}} \ar[dr]^{\times 2} && \{0, 1, 2, 3, \ldots\} \\
-%            & \{0, 2, 4, 6, 8, \ldots\} \ar[ur]^{\times \frac12}
-%          }
-%        \]
-%      \item The following diagram is not commutative:
-%        \[
-%          \xymatrix{
-%            \{1, 2, 3\} \ar@{^(->}[rr]^{\text{incl.}} \ar[dr]^{\times 2} && \{0, 1, 2, 3, \ldots\} \\
-%            & \{0, 2, 4, 6, 8, \ldots\} \ar@{^(->}[ur]^{\text{incl.}}
-%          }
-%        \]
-%    \end{itemize}
-%  \end{examples*}
+  See \autoref{sec:commutative-diagrams} for some examples of (non-)commutative diagrams.
   
   \begin{defn}[Functor]
-    A functor is a map between categories.  More formally, a \defnlabel[functor]{(covariant) functor} $F : \cat C \to \cat D$ between two categories $\cat C$ and $\cat D$ is a map $F_{\Ob} : \Ob(\cat C) \to \Ob(\cat D)$ together with a map $F_{\Mor} : \Mor(\cat C) \to \Mor(\cat D)$ that is compatible with morphism composition in \cat C and \cat D.  That is, for any composable morphisms $f$, $g$ in $\cat C$, $F(fg) = F(f) F(g)$.
+    A functor is a map between categories.  More formally, a \defnlabel[functor]{(covariant) functor} $F : \cat C \to \cat D$ between two categories $\cat C$ and $\cat D$ is a map $F_{\Ob} : \Ob(\cat C) \to \Ob(\cat D)$ together with a map $F_{\Hom} : \Hom(\cat C) \to \Hom(\cat D)$ that is compatible with morphism composition in \cat C and \cat D.  That is, for any composable morphisms $f$, $g$ in $\cat C$, $F(fg) = F(f) F(g)$.
   \end{defn}
-    
-  In \defnref{diagram} notation, saying that $F$ is a functor is saying that for any objects $X$ and $Y$ and any morphisms $f: X \to Y$ and $g: Y \to Z$, the following diagram commutes:
-  \[
-    \xymatrix{
-      X \ar[r]^f \ar[d]^F & Y \ar[r]^g \ar[d]^F & Z \ar[d]^F \\
-      F(X) \ar[r]^{F(f)} & F(Y) \ar[r]^{F(g)} & F(Z)
-    }
-  \]
   
-  Note that this implies that functors preserve identity morphisms.
-  
-%  \begin{xca}[(6.3) in \cite{commutative_algebra}] \label{xca:functor_commutative_diagram}
-%    Show that a functor $F$ being compatible with morphism composition is equivalent to the following diagram being commutative for all objects $X$, $Y$, and $Z$, and all morphisms $f: X \to Y$:
-%    \[
-%      \xymatrix{
-%        \Hom_{\cat C}(Y, Z) \ar[r] \ar[d] & \Hom_{\cat D}(F(Y), F(Z)) \ar[d] \\
-%        \Hom_{\cat C}(X, Z) \ar[r] & \Hom_{\cat D}(F(X), F(Z))
-%      }
-%    \]
-%    
-%    (Solution on \autopageref{sol:functor_commutative_diagram}.)
-%  \end{xca}
-  
-  \begin{example}[Forgetful Functors]
-    Many categories admit a forgetful functor, usually to the category of sets.  For example, the map that sends a topological space to its set of points is a forgetful functor from \cat{Top} to \cat{Set}.
-  \end{example}
-  
-  \begin{example}
-    For any category $\cat C$, the identity functor $\id_{\cat C}: \cat C \to \cat C$ sends every object to itself and every morphism to itself.
-  \end{example}
+  See \autoref{sec:more-functors} for more details about functors.
   
   \begin{defn}[Opposite Category]
     For any category $\cat C$, there is an \defnlabel{opposite category} $\cat C^\text{op}$ which has the same objects as $\cat C$, but in which all the arrows are reversed.  That is, for any morphism $f : X \to Y$ in $\cat C$, there is an opposite morphism $f^\text{op} : Y \to X$ in $\cat C^\text{op}$.  Composition is given by the rule $f^\text{op}g^\text{op} = (gf)^\text{op}$.
   \end{defn}
   
-  A functor $F: \cat C^\text{op} \to \cat D$ is also called a \defnlabel{contravariant functor} $\cat C \to \cat D$.
+  See \autoref{sec:covariant-contravariant} for an exercise on opposite categories.
   
-  \begin{xca} \label{xca:hom_op}
-    The assignment of pairs of objects $(X, Y) \mapsto \Hom_{\cat C}(X, Y)$ gives a functor
-    \[
-      \Hom_{\cat C}(-, -) : \cat C^\text{op} \times \cat C \to \cat{Set}
-    \]
-    
-    Why is this a functor from $\cat C^\text{op} \times \cat C$, rather than from $\cat C \times \cat C$, $\cat C \times \cat C^\text{op}$, or $\cat C^\text{op} \times \cat C^\text{op}$?
-    
-    (Solution on \autopageref{sol:hom_op}.)
-  \end{xca}
-  
-  \begin{defn}[Natural Transformation]
-    A \defnlabel{natural transformation} is a map between functors that is compatible with how the functors act on morphisms.  More formally, given two functors $F, F' : \cat C \rightrightarrows \cat D$, a natural transformation $t : F \to F'$ is a collection of maps $t_X : F(X) \to F'(X)$ (one for each object $X$ of $\cat C$) such that $t_YF(f) = F'(f)t_X$ for every map $f: X \to Y$ of $\cat C$.  This is equivalent to saying that the following diagram is commutative:
-    \[
+  \begin{wrapfigure}[6]{r}{0pt}
+    $$
       \xymatrix{
         F(X) \ar[r]^{F(f)} \ar[d]^{t_X} & F(Y) \ar[d]^{t_Y} \\
         F'(X) \ar[r]^{F'(f)} & F'(Y)
       }
-    \]
+    $$
+  \end{wrapfigure}
+  
+  $\left.\right.$
+  
+  \begin{defn}[Natural Transformation]
+    A \defnlabel{natural transformation} is a map between functors that is compatible with how the functors act on morphisms.  More formally, given two functors $F, F' : \cat C \rightrightarrows \cat D$, a natural transformation $t : F \to F'$ is a collection of maps $t_X : F(X) \to F'(X)$ (one for each object $X$ of $\cat C$) such that $t_YF(f) = F'(f)t_X$ for every map $f: X \to Y$ of $\cat C$.  This is equivalent to saying that the diagram to the right is commutative.
   \end{defn}
   
 %  \begin{defn}[Natural Equivalence]
@@ -279,45 +210,17 @@
   \end{defn}
   
   \begin{defn}[Functor Categories and Diagrams]
-    If $\cat C$ is a category and $\cat D$ is a small category, then the \defnlabel{functor category} $\cat C^{\cat D}$ consists of the collection of functors $F : \cat D \to \cat C$ (objects) and natural transformations between these functors (morphisms).  This is also called the category of \emph{diagrams in \cat C with the shape of \cat D}.
+    If $\cat C$ is a category and $\cat D$ is a small category, then the \defnlabel{functor category} $\cat C^{\cat D}$ is of the collection of functors $F : \cat D \to \cat C$ (objects) and natural transformations between these functors (morphisms).  This is also called the category of \emph{diagrams in \cat C with the shape of \cat D}.
   \end{defn}
   
   \begin{example}
-    If $\cat D$ is the category $\{a, b\}$ (a category with two objects and no non-identity morphisms), then the objects in $\cat C^{\cat D}$ are commutative diagrams consisting of exactly two objects and no non-identity morphisms.
+    Let $*$ denote the category with one object and no non-identity morphisms.  The objects in $\cat C^{*}$ are commutative diagrams consisting of one object and no non-identity morphisms.  We call such diagrams \defnlabel[constant diagram]{constant diagrams}.
   \end{example}
   
-  \begin{example}
-    Recall that $\emptyset$ is the category with no objects.  The unique object in $\cat C^\emptyset$ is the empty commutative diagram consisting of no objects.
-  \end{example}
-  
-  \begin{example}
-    Recall that $*$ is the category with one object and no non-identity morphisms.  The objects in $\cat C^{*}$ are commutative diagrams consisting of one object and no non-identity morphisms.  We call such diagrams \defnlabel[constant diagram]{constant diagrams}.
-  \end{example}
-  
-  \begin{example}
-    If $\cat D$ is the category $\{a \to b\}$, then the objects in $\cat C^{\cat D}$ are commutative diagrams $X_a \to X_b$, and the morphisms are natural transformations $t$ which make the following diagram commute:
-    \[
-      \xymatrix{
-        X_a \ar[d]^f \ar[r]^{t_a} & Y_a \ar[d]^g \\
-        X_b \ar[r]^{t_b} & Y_b
-      }
-    \]
-    
-    In this case, $\cat C^{\cat D}$ is called the \defnlabel{category of morphisms} of $\cat C$, which we denote by $\Mor(\cat C)$.
-  \end{example}
-  
-  \begin{example}
-    Suppose $\cat D$ and $\cat D'$ are small categories and $F : \cat D \to \cat D'$ is a functor.  Then $F$ gives a map $\cat C^{\cat D'} \to \cat C^{\cat D}$.  That is, for any $D' \in \cat C^{\cat D'}$, composition gives that $D'F \in \cat C^{\cat D}$ is a diagram with the shape of $\cat D$:
-    \[
-      \xymatrix{
-        \cat D \ar@{.>}[dr]^{D} \ar[d]_F & \\
-        \cat D' \ar[r]_{D'} & \cat C \\
-      }
-    \]
-  \end{example}
+  See \autoref{sec:diagram-examples} for more examples of functor categories and diagrams.
   
   \begin{example} \label{ex:constant_diagram_category}
-    Let $\cat D$ be a small category, and recall that $*$ is the category with one object and no non-identity morphisms.  Since $*$ is the \defnref{terminal object} in the category of small categories, there is a unique functor $F : \cat D \to *$, which sends every object to the unique object of $*$ and every morphism to the identity morphism.  For any category $\cat C$, there is a functor $G : \cat C^{*} \to \cat C^{\cat D}$ given by composition with this functor.
+    Let $\cat D$ be a small category.  Since $*$ is the \defnref{terminal object} in the category of small categories, there is a unique functor $F : \cat D \to *$, which sends every object to the unique object of $*$ and every morphism to the identity morphism.  For any category $\cat C$, there is a functor $G : \cat C^{*} \to \cat C^{\cat D}$ given by composition with this functor.
   \end{example}
   
   \begin{example}[The Diagonal Functor \texorpdfstring{$\Delta$}{\char"0394}]
@@ -360,14 +263,7 @@
     \]
   \end{defn}
   
-  \begin{xca}[{\cite[Problem 1.a]{sets_maps_limits_colimits}}]\label{xca:product_coproduct}
-    Find the colimit and limit of the following diagrams (which has no arrows):
-    \[
-      \{-4, 12, 183\}\qquad \{0, 12, 36\}
-    \]
-    
-    (Solution on \autopageref{sol:product_coproduct}.)
-  \end{xca}
+  See \autoref{sec:colimit-limit} for an exercise involving limits and colimits.
   
   \begin{defn}[Coproduct]
     Let $\cat D$ be a category with a set of objects $\mathcal I$ and no non-identity morphisms.  Then a diagram $F : \cat D \to \cat C$ is just a collection of objects $\{X_i\}_{i\in\mathcal I}$ in $\cat C$.  Then the colimit of $F$ is called the \defnlabel{coproduct} and denoted $\colim F = \coprod_i X_i$.  If $\mathcal I = \{0, 1\}$, then we write $X_0 \coprod X_1$.  If $\cat C$ is the category of sets or the category of topological spaces, then the colimit is a disjoint union.
@@ -388,7 +284,7 @@
   \begin{remark}
     Let $\cat C$ be a category.  Suppose that, for any functor $F$ from a small (respectively finite) category $\cat D$ to $\cat C$, the limit $\lim F$ exists.  Then $\cat C$ is said to \defnlabel[small limits]{have all small \emph{(respectively \emph{finite})} limits}.  Similarly, if $\colim F$ exists for every such functor $F$, then $\cat C$ is said to \defnlabel[small colimits]{have all small \emph{(respectively \emph{finite})} colimits}.
     
-    The category \cat{Top} have all small limits and colimits.
+    The category \cat{Top} of topological spaces has all small limits and colimits.
   \end{remark}
   
   \begin{defn}[Retract] % MC3
@@ -401,18 +297,21 @@
     In algebraic topology, a retraction of $Y$ onto $X \subset Y$ is a map $r : Y \to X$ that restricts to the identity on $X$. \cite[p. 3]{hatcher2005algebraic}  Then we say that $X$ is a retract of $Y$; the inclusion map $i : X \hookrightarrow Y$ satisfies $ri = \id_X$ by assumption.
   \end{example}
   
-  If $f$ and $g$ are morphisms of $\cat C$, then we say that $f$ is a retract of $g$ when the object of $\Mor(\cat C)$ represented by $f$ is a retract of the object of $\Mor(\cat C)$ represented by $g$.
+  If $f$ and $g$ are morphisms of $\cat C$, then we say that $f$ is a retract of $g$ when the object of the category of morphisms $\Mor(\cat C)$ represented by $f$ is a retract of the object of $\Mor(\cat C)$ represented by $g$.  (See \autoref{eg:category-of-morphisms} for a formal definition of $\Mor(\cat C)$, and \autoref{sec:retract} for a diagram.)
   
-  FIX (ELABORATE)
-  
-  \begin{defn}[Lift]
-    Given a commutative diagram with four objects and four arrows of the form
-    \[
+  \begin{wrapfigure}[6]{r}{0pt}
+    $$
       \xymatrix{
         A \ar[r]^f \ar[d]^i & X \ar[d]^p \\
         B \ar[r]^g \ar@{.>}[ur]^h & Y
       }
-    \]
+    $$
+  \end{wrapfigure}
+  
+  $\left.\right.$
+  
+  \begin{defn}[Lift]
+    Given a commutative diagram with four objects and four arrows of the form to the right,
     a \defnlabel{lift} or \defnlabel{lifting} in the diagram is a map $h : B \to X$ such that $ph = g$ and $hi = f$, i.e., the resulting diagram with five arrows commutes.
     
     If, given $i$ and $p$, such an $h$ exists for every choice of $f$ and $g$ (subject to $pf = gi$), then $i$ is said to have the \defnlabel{left lifting property} (LLP) with respect to $p$, and $p$ is said to have the \defnlabel{right lifting property} (RLP) with respect to $i$.
@@ -501,11 +400,11 @@
     If $Y = *$ is the terminal object in the category of topological spaces, i.e., is a one-point space, then the unique map $p : X \to *$ is a Hurewicz fibration for any space $X$.  The lift may be defined by $h(a, t) \equiv h(a, 0)$ for all $t \in I$; we are given $h(a, 0)$ for all $a \in A$.  In general, we say that an object $X$ is \defnlabel{fibrant} if the map $p : X \to *$ is a fibration.
   \end{example}
   
-  \begin{example}
-    If $X = Y \times Z$ for any space $Z$, then the projection map $p : X \to Y$ is a Hurewicz fibration because any map from $A \times I$ to FIX
-  \end{example}
-  
-  FIX (DESCRIBE/INTUITIVE/EXAMPLES)
+%  \begin{example}
+%    If $X = Y \times Z$ for any space $Z$, then the projection map $p : X \to Y$ is a Hurewicz fibration because any map from $A \times I$ to FIX
+%  \end{example}
+%  
+%  FIX (DESCRIBE/INTUITIVE/EXAMPLES)
   
   \begin{defn}[Closed Hurewicz Cofibration]
     Let $B$ be a topological space and let $A$ be a subspace of $B$.  We call the subspace inclusion $i : A \hookrightarrow B$ a \defnlabel{closed Hurewicz cofibration} if $A$ is a closed subspace of $B$ and $i$ has the homotopy extension property.  The map $i$ has the \defnlabel{homotopy extension property} if a lift (denoted by the dotted arrow) exists in the every commutative diagram of the following form for every topological space $Y$:
@@ -532,7 +431,7 @@
   
   
   
-  FIX (DESCRIBE/INTUITIVE/EXAMPLES)
+%  FIX (DESCRIBE/INTUITIVE/EXAMPLES)
   
   
 \section{Model Categories}
@@ -566,11 +465,13 @@
   \end{example}
 
 \section{Homotopy}
-  The five axioms of model categories are sufficient to define a notion of homotopy equivalence between maps.
+  The five axioms of model categories are sufficient to define a notion of homotopy equivalence between maps from $A$ to $X$.
   
-  Since all topological spaces are both \defnref{fibrant} and \defnref{cofibrant}, the notions of left homotopy and right homotopy coincide, and we will restrict ourselves to the former.  The situation is more complicated when we consider a model category where this is not true.  See \cite{dwyer1995homotopy} for a more thorough treatment.
+  We first consider the notion of left homotopy defined via cylinder objects, and then consider the dual notion of right homotopy defined via path objects.  If $A$ is cofibrant and $X$ is fibrant, as is the case with all topological spaces, then left homotopy and right homotopy are equivalent.
   
-  \subsection{Cylinder Objects}
+%  Since all topological spaces are both \defnref{fibrant} and \defnref{cofibrant}, the notions of left homotopy and right homotopy coincide, and we will restrict ourselves to the former.  The situation is more complicated when we consider a model category where this is not true.  See \cite{dwyer1995homotopy} for a more thorough treatment.
+  
+%  \subsection{Cylinder Objects}
 %    The idea behind defining a general notion of homotopy is to make a construction that allows us to express the properties that we want from a homotopy between two maps.  
     
     \begin{defn}[Cylinder Object]
@@ -586,15 +487,16 @@
     Recall that, in the category of topological spaces, $A \coprod A$ is the disjoint union of $A$ with itself.  Note that we have made use of \textbf{MC1}; coproduct is defined as the colimit of a finite diagram.  In the model category of \cat{Top} which we are considering, saying that the map $A \wedge I \xrightarrow{\sim} A$ is a weak equivalence (denoted by the $\sim$) is equivalent to requiring that $A$ and $A \wedge I$ be homotopy equivalent.  Since this diagram factors the map $\id_A + \id_A : A \coprod A \to A$, we can look at $A \wedge I$ as containing two (not necessarily distinct) copies of $A$.  Diagrammatically, we can look at this as requiring that the following diagram commutes:
     \[
       \xymatrix{
-        \xyincludegraphics[width=3em]{cylinder_object-A_0} \ar@/^/[drr]^{\id_A} \ar[dr]_{i_0} \\
-        & \xyincludegraphics[width=3em]{cylinder_object-A^I} \ar[r]^-{\sim} & \xyincludegraphics[width=3em]{cylinder_object-A} \\
-        \xyincludegraphics[width=3em]{cylinder_object-A_1} \ar@/_/[urr]_{\id_A} \ar[ur]^{i_1}
+%        &\xyincludegraphics[width=3em]{cylinder_object-A_0} \ar@/^/[drr]^{\id_A} \ar[dr]_{i_0} \\
+         \xyincludegraphics[width=3em]{cylinder_object-A_1}\xyincludegraphics[width=3em]{cylinder_object-A_0} \ar[r]^i \ar@/^2pc/[rr]^{\id_A + \id_A}
+         & \xyincludegraphics[width=3em]{cylinder_object-A^I} \ar[r]^-{\sim} & \xyincludegraphics[width=3em]{cylinder_object-A} % \\
+%        &\xyincludegraphics[width=3em]{cylinder_object-A_1} \ar@/_/[urr]_{\id_A} \ar[ur]^{i_1}
       }
       \qquad\qquad\qquad
       \xymatrix{
-        A \ar@/^/[drr]^{\id_A} \ar[dr]_{i_0} \\
-        & A \wedge I \ar[r]^-{\sim} & A \\
-        A \ar@/_/[urr]_{\id_A} \ar[ur]^{i_1}
+%        A \ar@/^/[drr]^{\id_A} \ar[dr]_{i_0} \\
+        A\coprod A \ar[r]^i \ar@/^2pc/[rr]^{\id_A}& A \wedge I \ar[r]^-{\sim} & A %\\
+%        A \ar@/_/[urr]_{\id_A} \ar[ur]^{i_1}
       }
     \]
     
@@ -606,45 +508,310 @@
       Every space $A$ has a cylinder object $A \times I$; the deformation retract of $A \times I$ onto $A$ gives a homotopy equivalence between $A$ and $A \times I$, and we can inject $A \hookrightarrow A \times I$ in two ways via $a \mapsto (a, 0)$ and $a \mapsto (a, 1)$ to factor the folding map.
     \end{example}
 
-  \subsection{Left Homotopy}
+%  \subsection{Left Homotopy}
     \begin{defn}[Left Homotopy]
       Two maps $f, g : A \to X$ are said to be \defnlabel{left homotopic} if there is a cylinder object $A \wedge I$ for $A$ such that the map $f + g : A \coprod A \to X$ extends to a map $H : A \wedge I \to X$.  Diagramatically, this is saying that there exists a cylinder object $A \wedge I$ and an $H$ which makes the following diagram commute:
       \[
+%        \xymatrix{
+%          \xyincludegraphics[width=3em]{cylinder_object-A_0} \ar@/^/[drr]^{f} \ar[dr]_{i_0} \\
+%          & \xyincludegraphics[width=3em]{cylinder_object-A^I} \ar@{.>}[r]^{H} & \xyincludegraphics[width=3em]{cylinder_object-A} \\
+%          \xyincludegraphics[width=3em]{cylinder_object-A_1} \ar@/_/[urr]_{g} \ar[ur]^{i_1}
+%        }
+%        \qquad\qquad\qquad
+%        \xymatrix{
+%          A \ar@/^/[drr]^{f} \ar[dr]_{i_0} \\
+%          & A \wedge I \ar@{.>}[r]^{H} & X \\
+%          A \ar@/_/[urr]_{g} \ar[ur]^{i_1}
+%        }
         \xymatrix{
-          \xyincludegraphics[width=3em]{cylinder_object-A_0} \ar@/^/[drr]^{f} \ar[dr]_{i_0} \\
-          & \xyincludegraphics[width=3em]{cylinder_object-A^I} \ar@{.>}[r]^{H} & \xyincludegraphics[width=3em]{cylinder_object-A} \\
-          \xyincludegraphics[width=3em]{cylinder_object-A_1} \ar@/_/[urr]_{g} \ar[ur]^{i_1}
+          \xyincludegraphics[width=3em]{cylinder_object-A} \ar@/^/[d]^f \ar@/_/[d]_g & \xyincludegraphics[width=3em]{cylinder_object-A^I} \ar@{.>}[dl]^H \ar[l]_-{\sim} \\
+          X  & {\xyincludegraphics[width=3em]{cylinder_object-A_0}\ \xyincludegraphics[width=3em]{cylinder_object-A_1}} \ar[u]_-i \ar[l]^-{\id_0 + \id_1}
         }
         \qquad\qquad\qquad
         \xymatrix{
-          A \ar@/^/[drr]^{f} \ar[dr]_{i_0} \\
-          & A \wedge I \ar@{.>}[r]^{H} & X \\
-          A \ar@/_/[urr]_{g} \ar[ur]^{i_1}
+          A \ar@/^/[d]^f \ar@/_/[d]_g & A \wedge I \ar@{.>}[dl]^H \ar[l]_-{\sim} \\
+          X  & A \coprod A \ar[u]_i \ar[l]^{\id_0 + \id_1}
         }
       \]
     \end{defn}
     
-    Note that in our example model category for \cat{Top}, this is equivalent to the standard definition of two maps being homotopic.  If two maps are homotopic, then the cylinder object $A \times I$ gives us a commutative diagram where $H : A \times I \to X$ is the homotopy between $f$ and $g$.  To go the other way, if we are given a cylinder object $A \wedge I$ and a map $H : A \wedge I \to X$  FIX
-%  \subsection{Path Object}
+%  \subsection{Path Object}  
+    \begin{defn}[Path Object]
+      A \defnlabel{path object} for an object $X$ is an object $X^I$ of \cat{C} together with a diagram
+      \[
+        \xymatrix{
+          X \ar[r]^-{\sim} & X^I \ar[r]^-p & X \prod X
+        }
+      \]
+      which factors the diagonal map $(\id_X, \id_X) : X \to X \prod X$ defined by $x \mapsto (x, x)$.
+    \end{defn}
+    
+    Recall that, in the category of topological spaces, $X \prod X$, also called $X \times X$, is the Cartesian product of $X$ with itself.  Note that we have made use of \textbf{MC1}; product is defined as the limit of a finite diagram.
+    
+    \begin{example}
+      Every object $X$ is a path object for itself.
+    \end{example}
+    
+    \begin{example} \label{eg:path-object-X^I} %
+%      
+      \begin{figure}[htb]
+        \[
+        \xymatrix{
+          \xyincludegraphics[width=6em]{path_object-X} \ar@/_1pc/[rrrrr]_-{\sim}
+          &&&&&
+          \xyincludegraphics[width=8em]{path_object-X^I} \ar@/_1pc/[lllll]_-{
+            \xyincludegraphics[width=6em]{path_object-X^I_2o3}\ 
+            \xyincludegraphics[width=6em]{path_object-X^I_1o3}
+          }
+        }
+        \]
+        \caption[Path Objects]{A diagram of the weak equivalence between $X$ (represented by the line on the left) and $X^I$ in \autoref{eg:path-object-X^I}.  The space $X^I$ is the space of all paths, all maps from $I$ to $X$.  A small subset of such paths, starting at one particular point, is plotted on the right as $(f(t), t)$ for some paths $f$.  The weak equivalence from $X$ to $X^I$ is given by sending each point to the constant path (drawn as the vertical line).  Its homotopy inverse is given by mapping each path to it's start point.  The homotopy with the identity is given by retracting each path to its base-point, two intermediate steps of which are depicted above the map $X^I \to X$.} \label{fig:path-object-explanation}
+      \end{figure}
+%      
+      Every topological space $X$ has a path object $X^I$ consisting of all continuous functions from the interval to $X$; this space is given the compact-open topology, which is defined in \cite{fox1945topologies,wiki:CompactOpenTopology}.  See \autoref{fig:path-object-explanation} and \autoref{fig:path-object-diagram}.  A weak equivalence between $X$ and $X^I$ is given by linearly interpolating between a path in $X^I$ and the constant path beginning at the same point as it.  More rigorously, if we define $f : X^I \to X$ as $f(h) = h(0)$ (i.e., map a path to its starting point), and we define $g : X \to X^I$ as the constant path based at $x$, then $f \circ g = \id_X$ and $g \circ f$ is homotopic to the identity on $X^I$ via the homotopy $h : X^I \times I \to X^I$ defined by $h(p, t) = (s \mapsto p((1 - t) s))$.
+      
+      The map $p : X^I \to X\prod X$ may then be given by $p(f) = (f(0), f(1))$.  Note that $p$ is not unique.
+      
+      \begin{figure}[htb]
+        \[
+        \xymatrix{
+          \xyincludegraphics[width=6em]{path_object-X} \ar[r]^-{\sim} & \xyincludegraphics[width=8em]{path_object-X^I} \ar[r]^-p & \xyincludegraphics[width=6em]{path_object-X_x_X}
+        }
+        \]
+        \caption[Path Object Diagram]{The weak equivalence sends each point to the constant path, drawn as a vertical line.  The map $p$ maps each path to the pair of its end-points, $p(f) = (f(0), f(1))$.  %, drawn in the same colors as the paths they came from.
+          The composition maps to the diagonal line drawn in $X \prod X$.} \label{fig:path-object-diagram}
+      \end{figure}
+    \end{example}
+      
+      
 %  \subsection{Right Homotopy}
-%  \subsection{Homotopic Maps}
 
-  \subsection{The Homotopy Category}
+    $\left.\right.$
+    \begin{wrapfigure}[6]{r}{0pt}
+      $$
+        \xymatrix{
+          X \ar[r]^-{\sim} & X^I \ar[d]^p \\
+          A \ar@/^/[u]^f \ar@/_/[u]_g \ar[r]_-{(f, g)} \ar@{.>}[ur]_H & X \prod X
+        }
+      $$
+    \end{wrapfigure}
+    $\left.\right.$
+
+    \begin{defn}[Right Homotopy]
+      Two maps $f, g : A \to X$ are said to be \defnlabel{right homotopic} if there is a path object $X^I$ for $X$ such that the product map $(f, g) : A \to X \prod X$ lifts to a map $H : A \to X^I$.  Diagramatically, this is saying that there exists a path object $X^I$ and an $H$ which makes the following diagram to the right commute.
+    \end{defn}
+    
+%  \subsection{Homotopic Maps}
+    Note that in our example model category for \cat{Top}, this is equivalent to the standard definition of two maps being homotopic.  If two maps are homotopic, then the cylinder object $A \times I$ gives us a commutative diagram where $H : A \times I \to X$ is the homotopy between $f$ and $g$.  Going the other way is a bit more complicated; the basic idea is that we can always find cylinder and path objects such that the diagram where we want a lift to exist satisfies the hypothesis of \textbf{MC4}.  Given a path object like this, \textbf{MC4} guarantees that there exists a lift when the cylinder object we choose is $A \times I$, and so we get the desired homotopy.  This is proven more rigorously in Lemma 4.21 and Remark 4.23 in \cite{dwyer1995homotopy}.
+
+%  \subsection{The Homotopy Category}
     Because all topological spaces are cofibrant in the model category structure we are investigating, left homotopy is an equivalence relation on the set of maps in \cat{Top}.  (A proof of this can be found in \cite[Lemma 4.7]{dwyer1995homotopy}.)
     
-    The homotopy category $\mathop{Ho}(\cat{C})$ of a model category \cat{C} is a category with the same objects as \cat{C}, and whose morphisms are homotopy equivalence classes of morphisms in \cat{C}.  In general, the morphisms between two objects in $\mathop{Ho}(\cat{C})$ are the morphisms that result from replacing each object with it's ``closest matching'' object that is both fibrant and cofibrant.  Because all topological spaces are both fibrant and cofibrant in the model category structure we are investigating, we don't need to take this step.  A full description of the construction can be found in \cite[\S 5]{dwyer1995homotopy}.
+  \begin{defn}[Homotopy Category]
+    The \defnlabel{homotopy category} $\Ho(\cat{Top})$ of the model category \cat{Top} is a category with the same objects as \cat{Top}, and whose morphisms are homotopy equivalence classes of morphisms in \cat{Top}.  In general, the morphisms between two objects in $\Ho(\cat{C})$ are the morphisms that result from replacing each object with it's ``closest matching'' object that is both fibrant and cofibrant.  Because all topological spaces are both fibrant and cofibrant in the model category structure we are investigating, we don't need to take this step.  A full description of the construction can be found in \cite[\S 5]{dwyer1995homotopy}.
+  \end{defn}
+  
+  It is possible to construct the homotopy category in a more general fashion, in a manner dependent only on the class of weak equivalences.  This suggests that in a model category, weak equivalences contain all the necessary information to develop a theory of homotopy equivalence, and that fibrations, cofibrations, and the axioms serve primarily as tools for doing constructions.  \cite{dwyer1995homotopy}
+  
+  \begin{defn}[Localization]
+    Let \cat{C} be a category and $W$ be a class of morphisms of \cat{C}.  A functor $F : \cat{C} \to \cat{D}$ is a \defnlabel[localization]{localization of \cat{C} with respect to $W$} if
+    \begin{enumerate}
+      \item $F(f)$ is an isomorphism for each $f \in W$; and
+      \item whenever $G : \cat{C} \to \cat D'$ is a functor and every element of $G(W)$ is an isomorphism, there exists a unique functor $G' : \cat D \to \cat D'$ such that $G'F = G$. %, i.e., which makes the following diagram commute:
+%      \[
+%        \xymatrix{
+%          \cat C \ar[r]^F \ar[dr]_{G} & \cat D \ar[d]^-{\exists!\,G'} \\
+%          &\cat D'
+%        }
+%      \]
+    \end{enumerate}
+  \end{defn}
+  The second condition guarantees uniqueness of the localization, if it exists; hence we may denote the codomain \cat{D} of a localization of \cat{C} with respect to $W$ as $W^{-1}\cat C$; this is the smallest category in which all elements of $W$ are isomorphisms, which otherwise preserves the structure of \cat{C}.
+  
+  
+  \begin{thm}[{\cite[6.2]{dwyer1995homotopy}}]
+    If \cat{C} is a model category and $W$ is the class of weak equivalences in \cat{C}, then the functor $\gamma : \cat{C} \to \Ho(\cat{C})$ is the localization of \cat{C} with respect to $W$.
+  \end{thm}
+  
+  As stated in \cite{dwyer1995homotopy}, informally, this says that the localization of a model category \cat{C} always exists, and is isomorphic to the homotopy category.  That is, the homotopy category of \cat{C} is the category you get by starting with \cat{C} and turning all weak equivalences in to isomorphisms.
   
 %\section{Further Reading}
 %  FIX
 
  
-\nocite{*}
+%\nocite{*}
 \bibliographystyle{plain}
 \bibliography{quillen_model_structures}
 
 \clearpage
 
 \appendix
+\section{Additional Category Theoretic Material}
+  \subsection{Basic Categories} \label{sec:category-examples}
+    The following are some example categories:
+    \begin{examples*}\par\noindent
+      \begin{itemize}
+        \item The empty category, $\emptyset$, consisting of no objects and no morphisms
+        \item The category, $*$, with one object and no non-identity morphisms.
+        \item A category with a set $S$ of objects and no non-identity morphisms
+        \item The category $\{a \from b \to c\}$ consisting of three objects, the two morphisms $b \to a$ and $b \to c$, and the three identity morphisms $\id_a$, $\id_b$, and $\id_c$
+        \item The category \cat{Set}, consisting of sets (the objects) and maps between sets (the morphisms)
+        \item The category \cat{Top}, consisting of topological spaces (the objects) and continuous maps (the morphisms)
+        \item The category \cat{Grp}, consisting of groups (the objects) and maps preserving the group operation (the morphisms)
+        \item For any two categories $\cat C$ and $\cat D$, there is a direct product category $\cat C \times \cat D$.  The objects are pairs of objects $(X, Y)$ for $X\in \Ob (\cat C)$ and $Y\in \Ob(\cat D)$ and the morphisms are pairs of morphisms $(f, g)$ for $f$ a morphism in $\cat C$ and $g$ a morphism in $\cat D$.
+      \end{itemize}
+    \end{examples*}
+    
+    \begin{defn}[Subcategory]
+      If $\cat C$ and $\cat D$ are categories with $\Ob(\cat D) \subset \Ob(\cat C)$ and for which every morphism in $\cat D$ is also a morphism in $\cat C$, then we say that $\cat D$ is a \defnlabel{subcategory} of $\cat C$ and we write $\cat D \subset \cat C$.
+    \end{defn}
+  
+  \subsection{Initial and Terminal Objects} \label{sec:initial-and-terminal}
+    \begin{xca} \label{xca:initial_terminal_unique}
+      Show that the initial and terminal objects of a category, if they exist, are unique up to unique \defnref{isomorphism}.
+      
+      (Solution on \autopageref{sol:initial_terminal_unique}.)
+    \end{xca}
+    
+    \begin{examples*}\par\noindent
+      \begin{itemize}
+        \item The initial object in the category \cat{Set} of sets is the empty set; there is exactly one map from the empty set to any other set (the trivial one).  Furthermore, the empty set is the only set with a map to the empty set, so there are no other initial objects.
+        \item Any singleton set (a set with one element) is a terminal object in the category \cat{Set}.  There is only one singleton set, up to unique isomorphism.
+        \item In the category \cat{Grp} of groups, the (trivial) group with one element is both an initial object and a terminal object.
+        \item In the category of pointed sets (sets with a distinguished element), a morphism from $(A, a) \to (B, b)$ (with $a\in A$ and $b\in B$) is a map $f : A \to B$ with $f(a) = b$.  In this category, singleton sets are both initial and terminal objects.
+        \item In the category of rings, the ring of integers $\mathbb Z$ is an initial object, and the trivial ring consisting of a single element $0 = 1$ is a terminal object.
+      \end{itemize}
+      See \cite{wiki:InitialAndTerminalObjects} for a more extensive list.
+    \end{examples*}
+    
+  \subsection{Commutative Diagrams} \label{sec:commutative-diagrams}
+    \begin{examples*}\par\noindent
+      \begin{itemize}
+        \item Any diagram with no non-identity morphisms is commutative.
+        \item The following diagram, where incl.~denotes inclusion, is commutative:
+          \[
+            \xymatrix{
+              \{1, 2, 3\} \ar@{^(->}[rr]^{\text{incl.}} \ar[dr]^{\times 2} && \{0, 1, 2, 3, \ldots\} \\
+              & \{0, 2, 4, 6, 8, \ldots\} \ar[ur]^{\times \frac12}
+            }
+          \]
+        \item The following diagram is not commutative:
+          \[
+            \xymatrix{
+              \{1, 2, 3\} \ar@{^(->}[rr]^{\text{incl.}} \ar[dr]^{\times 2} && \{0, 1, 2, 3, \ldots\} \\
+              & \{0, 2, 4, 6, 8, \ldots\} \ar@{^(->}[ur]^{\text{incl.}}
+            }
+          \]
+      \end{itemize}
+    \end{examples*}
+    
+  \subsection{Functors} \label{sec:more-functors}
+    Recall the following definition of a functor:
+    \begin{defn*}[Functor]
+      A functor is a map between categories.  More formally, a \emph{(covariant) functor} $F : \cat C \to \cat D$ between two categories $\cat C$ and $\cat D$ is a map $F_{\Ob} : \Ob(\cat C) \to \Ob(\cat D)$ together with a map $F_{\Hom} : \Hom(\cat C) \to \Hom(\cat D)$ that is compatible with morphism composition in \cat C and \cat D.  That is, for any composable morphisms $f$, $g$ in $\cat C$, $F(fg) = F(f) F(g)$.
+    \end{defn*}
+    
+    In \defnref{diagram} notation, saying that $F$ is a functor is saying that for any objects $X$ and $Y$ and any morphisms $f: X \to Y$ and $g: Y \to Z$, the following diagram commutes:
+    \[
+    \xymatrix{
+      X \ar[r]^f \ar[d]^F & Y \ar[r]^g \ar[d]^F & Z \ar[d]^F \\
+      F(X) \ar[r]^{F(f)} & F(Y) \ar[r]^{F(g)} & F(Z)
+    }
+    \]
+    
+    Note that this implies that functors preserve identity morphisms.
+    
+    \begin{xca}[(6.3) in \cite{commutative_algebra}] \label{xca:functor_commutative_diagram}
+      Show that a functor $F$ being compatible with morphism composition is equivalent to the following diagram being commutative for all objects $X$, $Y$, and $Z$, and all morphisms $f: X \to Y$:
+      \[
+        \xymatrix{
+          \Hom_{\cat C}(Y, Z) \ar[r] \ar[d] & \Hom_{\cat D}(F(Y), F(Z)) \ar[d] \\
+          \Hom_{\cat C}(X, Z) \ar[r] & \Hom_{\cat D}(F(X), F(Z))
+        }
+      \]
+      
+      (Solution on \autopageref{sol:functor_commutative_diagram}.)
+    \end{xca}
+    
+    \begin{example}[Forgetful Functors]
+      Many categories admit a forgetful functor, usually to the category of sets.  For example, the map that sends a topological space to its set of points is a forgetful functor from \cat{Top} to \cat{Set}.
+    \end{example}
+    
+    \begin{example}
+      For any category $\cat C$, the identity functor $\id_{\cat C}: \cat C \to \cat C$ sends every object to itself and every morphism to itself.
+    \end{example}
+    
+  \subsection{The Opposite Category} \label{sec:covariant-contravariant}
+    A functor $F: \cat C^\text{op} \to \cat D$ is also called a \defnlabel{contravariant functor} $\cat C \to \cat D$.
+  
+    \begin{xca} \label{xca:hom_op}
+      The assignment of pairs of objects $(X, Y) \mapsto \Hom_{\cat C}(X, Y)$ gives a functor
+      \[
+      \Hom_{\cat C}(-, -) : \cat C^\text{op} \times \cat C \to \cat{Set}
+      \]
+      
+      Why is this a functor from $\cat C^\text{op} \times \cat C$, rather than from $\cat C \times \cat C$, $\cat C \times \cat C^\text{op}$, or $\cat C^\text{op} \times \cat C^\text{op}$?
+      
+      (Solution on \autopageref{sol:hom_op}.)
+    \end{xca}
+    
+  \subsection{Functor Categories and Diagrams} \label{sec:diagram-examples}
+    \begin{example}
+      If $\cat D$ is the category $\{a, b\}$ (a category with two objects and no non-identity morphisms), then the objects in $\cat C^{\cat D}$ are commutative diagrams consisting of exactly two objects and no non-identity morphisms.
+    \end{example}
+    
+    \begin{example}
+      Recall that $\emptyset$ is the category with no objects.  The unique object in $\cat C^\emptyset$ is the empty commutative diagram consisting of no objects.
+    \end{example}
+    
+    \begin{example} \label{eg:category-of-morphisms}
+      If $\cat D$ is the category $\{a \to b\}$, then the objects in $\cat C^{\cat D}$ are commutative diagrams $X_a \to X_b$, and the morphisms are natural transformations $t$ which make the following diagram commute:
+      \[
+      \xymatrix{
+        X_a \ar[d]^f \ar[r]^{t_a} & Y_a \ar[d]^g \\
+        X_b \ar[r]^{t_b} & Y_b
+      }
+      \]
+      
+      In this case, $\cat C^{\cat D}$ is called the \defnlabel{category of morphisms} of $\cat C$, which we denote by $\Mor(\cat C)$.
+    \end{example}
+    
+    \begin{example}
+      Suppose $\cat D$ and $\cat D'$ are small categories and $F : \cat D \to \cat D'$ is a functor.  Then $F$ gives a map $\cat C^{\cat D'} \to \cat C^{\cat D}$.  That is, for any $D' \in \cat C^{\cat D'}$, composition gives that $D'F \in \cat C^{\cat D}$ is a diagram with the shape of $\cat D$:
+      \[
+        \xymatrix{
+          \cat D \ar@{.>}[dr]^{D} \ar[d]_F & \\
+          \cat D' \ar[r]_{D'} & \cat C \\
+        }
+      \]
+    \end{example}
+    
+  \subsection{Colimits and Limits} \label{sec:colimit-limit}
+    \begin{xca}[{\cite[Problem 1.a]{sets_maps_limits_colimits}}]\label{xca:product_coproduct}
+      Find the colimit and limit of the following diagrams (which has no arrows):
+      \[
+        \{-4, 12, 183\}\qquad \{0, 12, 36\}
+      \]
+      
+      (Solution on \autopageref{sol:product_coproduct}.)
+    \end{xca}
+    
+  \subsection{Retraction} \label{sec:retract}
+    Suppose $f$ and $g$ are morphisms of \cat{C}.  What does it mean for $f$ to be a retract of $g$?  As shown in \cite[Lemma 2.7]{dwyer1995homotopy}, this means that there is a diagram
+    \[
+      \xymatrix{
+        X \ar[r]^i \ar[d]^f & Y \ar[r]^r \ar[d]^g & X \ar[d]^f \\
+        X' \ar[r]^{i'} X' & Y' \ar[r]^{r'} & X'
+      }
+    \]
+    such that $ri$ and $r'i'$ are identity maps.
+    
+    \begin{example}
+      In algebraic topology, a retraction of $Y$ onto $X \subset Y$ is a map $r : Y \to X$ that restricts to the identity on $X$.  We can find one example of morphisms $f$ and $g$ with $f$ a retract of $g$ based on this idea.  If $X$ includes into $Y$, $g$ restricted to $X$ is equal to $f$, and $g(Y) = f(X)$, then $f$ is a retract of $g$.  In other words, $f$ is a retract of $g$ if $f$ and $g$ agree on the domain of $f$, and $g$ maps all of its domain into the image of $f$.
+    \end{example}
+    
+    
+    
 \section{Solutions to the Exercises}
     \begin{soln*}[to \autoref{xca:initial_terminal_unique}] \label{sol:initial_terminal_unique}
       The initial and terminal objects of a category, if they exist, are unique up to unique \defnref{isomorphism}.
@@ -652,18 +819,18 @@
       If $*$ and $*'$ are two terminal objects of $\cat C$, then there is a unique morphism $f: *' \to *$ (because $*$ is terminal) and a unique morphism $g : * \to *'$ (because $*'$ is terminal).  Furthermore, we must have $gf = \id_{*'}$ and $fg = \id_{*}$ (because the identity maps are the unique maps from $* \to *$ and $*' \to *'$).  Thus $*$ and $*'$ are \defnref{isomorphic}, and there is a unique \defnref{isomorphism} between them.
     \end{soln*}
     
-%    \begin{soln*}[to \autoref{xca:functor_commutative_diagram}] \label{sol:functor_commutative_diagram}
-%      Saying that the diagram
-%      \[
-%        \xymatrix{
-%          \Hom_{\cat C}(Y, Z) \ar[r] \ar[d] & \Hom_{\cat D}(F(Y), F(Z)) \ar[d] \\
-%          \Hom_{\cat C}(X, Z) \ar[r] & \Hom_{\cat D}(F(X), F(Z))
-%        }
-%      \]
-%      commutes is equivalent to saying that the two maps $\Hom_{\cat C}(Y, Z)\rightrightarrows \Hom_{\cat D}(F(X), F(Z))$ are equivalent.
-%      
-%      Specifying a morphism $f: X \to Y$ naturally specifies a unique map $\Hom_{\cat C}(Y, Z) \to \Hom_{\cat C}(X, Z)$; for any map $h : Y \to Z$, we get a map $hf : X \to Z$ by composing $h$ with $f$.  The top-right path is given by mapping $h\in \Hom_{\cat C}(Y, Z)$ to $F(h)$ and then composing it with $F(f)$, giving $F(h)F(f)$.  The bottom-right path is given by composing $h\in \Hom_{\cat C}(Y, Z)$ with $f$ to get $hf : X \to Z$, and then applying $F$ to get $F(hf)$.  Saying that these two paths are the same is equivalent to saying that $F(hf) = F(h)F(f)$, i.e., that the functor $F$ is compatible with composition of morphisms.
-%    \end{soln*}
+    \begin{soln*}[to \autoref{xca:functor_commutative_diagram}] \label{sol:functor_commutative_diagram}
+      Saying that the diagram
+      \[
+        \xymatrix{
+          \Hom_{\cat C}(Y, Z) \ar[r] \ar[d] & \Hom_{\cat D}(F(Y), F(Z)) \ar[d] \\
+          \Hom_{\cat C}(X, Z) \ar[r] & \Hom_{\cat D}(F(X), F(Z))
+        }
+      \]
+      commutes is equivalent to saying that the two maps $\Hom_{\cat C}(Y, Z)\rightrightarrows \Hom_{\cat D}(F(X), F(Z))$ are equivalent.
+      
+      Specifying a morphism $f: X \to Y$ naturally specifies a unique map $\Hom_{\cat C}(Y, Z) \to \Hom_{\cat C}(X, Z)$; for any map $h : Y \to Z$, we get a map $hf : X \to Z$ by composing $h$ with $f$.  The top-right path is given by mapping $h\in \Hom_{\cat C}(Y, Z)$ to $F(h)$ and then composing it with $F(f)$, giving $F(h)F(f)$.  The bottom-right path is given by composing $h\in \Hom_{\cat C}(Y, Z)$ with $f$ to get $hf : X \to Z$, and then applying $F$ to get $F(hf)$.  Saying that these two paths are the same is equivalent to saying that $F(hf) = F(h)F(f)$, i.e., that the functor $F$ is compatible with composition of morphisms.
+    \end{soln*}
     
     \begin{soln*}[to \autoref{xca:hom_op}] \label{sol:hom_op}
       Consider objects $X$, $Y$, $X'$, and $Y'$ in $\cat C$.  The functor $\Hom_{\cat C}(-, -)$ sends $(X, Y) \mapsto \Hom_{\cat C}(X, Y)$ and $(X', Y') \mapsto \Hom_{\cat C}(X', Y')$.  We want to know how $\Hom_{\cat C}(-, -)$ acts on morphisms.
